@@ -271,7 +271,8 @@ class Lighthouse(object):
 			page += 1
 		
 	def get_tickets(self, project, page=1):
-		"""Retrieves all the tickets in a project
+		"""Retrieves all the tickets in a page of a project.
+		If no page is specified, uses the first one.
 		
 		>>> lh = Lighthouse()
 		>>> lh.url = 'http://ars.lighthouseapp.com'
