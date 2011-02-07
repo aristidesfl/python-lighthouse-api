@@ -327,14 +327,14 @@ class Lighthouse(object):
 				project.tickets[t_obj.number] = t_obj
 		return c
 
-    def get_new_tickets(self, project):
-    	"""Retrieves all the tickets in the first page of a project,
-    	 then returns a list with the new ones.
-    	 """
-    	old_tickets = project.tickets;
-    	self.get_tickets(project)
-    	return list(set(project.tickets).difference(set(old_tickets)))
-    	
+	def get_new_tickets(self, project):
+		"""Retrieves all the tickets in the first page of a project,
+		then returns a list with the new ones.
+		"""
+		old_tickets = project.tickets;
+		self.get_tickets(project)
+		return list(set(project.tickets).difference(set(old_tickets)))
+
 	def get_full_ticket(self, project, ticket):
 		path = Ticket.endpoint_single % (project.id, ticket.number)
 		ticket_data = self._get_data(path)
