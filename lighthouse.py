@@ -393,7 +393,7 @@ class Ticket(object):
 		
 	def __repr__(self):
 		if self.title:
-			return "Ticket: %s" % (self.title,)
+			return "Ticket: %s" % (self.title.encode('ascii', 'replace'),)
 		else:
 			return "Ticket: Unnamed"
 		
