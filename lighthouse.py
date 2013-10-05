@@ -265,7 +265,7 @@ class Lighthouse(object):
 		c = 30
 		page = 1
 		ticket_count = 0
-		while c == 30:
+		while c >= 30:
 			c = self.get_tickets(project, page)
 			ticket_count += c
 			page += 1
@@ -317,14 +317,15 @@ class Lighthouse(object):
 		if(ticket_list.get('children', None)):
 			for ticket in ticket_list['children']:
 				c += 1
-				t_obj = Ticket()
-				for field in ticket['children']:
-					field_name, field_value, field_type = \
-						self._parse_field(field)
-					py_field_name = field_name.replace('-', '_')
-					t_obj.__setattr__(py_field_name, field_value)
-					t_obj.fields.add(py_field_name)
-				project.tickets[t_obj.number] = t_obj
+				if( ticket.get('children', None) ): # Got the KeyError 'children', so check whether it exists
+					t_obj = Ticket()
+					for field in ticket['children']:
+						field_name, field_value, field_type = \
+							self._parse_field(field)
+						py_field_name = field_name.replace('-', '_')
+						t_obj.__setattr__(py_field_name, field_value)
+						t_obj.fields.add(py_field_name)
+					project.tickets[t_obj.number] = t_obj
 		return c
 
 	def get_new_tickets(self, project):
@@ -338,9 +339,9 @@ class Lighthouse(object):
 	def get_full_ticket(self, project, ticket):
 		path = Ticket.endpoint_single % (project.id, ticket.number)
 		ticket_data = self._get_data(path)
+
 		for field in ticket_data['children']:
-			field_name, field_value, field_type = \
-				self._parse_field(field)
+			field_name, field_value, field_type = self._parse_field(field)
 			py_field_name = field_name.replace('-', '_')
 			ticket.__setattr__(py_field_name, field_value)
 			ticket.fields.add(py_field_name)
